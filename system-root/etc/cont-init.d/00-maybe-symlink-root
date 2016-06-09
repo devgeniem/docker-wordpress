@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv bash
+
+# Allow different project root with clever symlink
+# This is used to trick drone CI to mount the files elsewhere than $PROJECT_ROOT
+if [ "$OVERRIDE_ROOT" != "$PROJECT_ROOT" ]; then
+    echo "INFO: Changing project path using symlink $PROJECT_ROOT -> $OVERRIDE_ROOT..."
+    # Remove current dir if it exists
+    rmdir $PROJECT_ROOT
+
+    # Create symlink to real project root
+    ln -sf $PROJECT_ROOT $PROJECT_ROOT
+fi

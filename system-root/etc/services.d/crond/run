@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv sh
+
+# Runs cron daemon in foreground
+crond -l 2 -f

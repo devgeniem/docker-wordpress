@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+
+# Check that uploads dir is always owned by wordpress:web
+chown wordpress:web $UPLOADS_ROOT
+
+# Ensure that we didn't forget some root owned folders inside uploads dir
+find $UPLOADS_ROOT -user root -type d -exec chown wordpress:web {} \;

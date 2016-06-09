@@ -1,0 +1,40 @@
+#!/bin/bash
+# Copyright © 2015 Bjørn Johansen
+# This work is free. You can redistribute it and/or modify it under the
+# terms of the Do What The Fuck You Want To Public License, Version 2,
+# as published by Sam Hocevar. See http://www.wtfpl.net/ for more details.
+# Source: https://bjornjohansen.no/wordpress-cron-wp-cli
+# Github: https://gist.github.com/bjornjohansen/a00a9fee5475c4dadb56#file-run-wp-cron-sh
+
+# This is modified for our container. In this container you don't need to use --path
+# because it's automatically included
+
+# Check if WP-CLI is available
+if ! hash wp 2>/dev/null; then
+  echo "WP-CLI is not available"
+  exit
+fi
+
+# If WordPress isn’t installed here, we bail
+if ! $(wp core is-installed --quiet); then
+  echo "WordPress is not installed here: ${WP_CORE}"
+  exit
+fi
+
+# Get a list of site URLs
+if $(wp core is-installed --quiet --network);
+then
+  SITE_URLS=`wp site list --fields=url --archived=0 --deleted=0 --format=csv | sed 1d`
+else
+  SITE_URLS=(`wp option get siteurl`)
+fi
+
+# Loop through all the sites
+for SITE_URL in $SITE_URLS
+do
+  # Run all event hooks that are due
+  for EVENT_HOOK in $(wp cron event list --format=csv --fields=hook,next_run_relative --url="$SITE_URL" | grep now$ | awk -F ',' '{print $1}')
+  do
+    wp cron event run "$EVENT_HOOK" --url="$SITE_URL" --quiet
+  done
+done

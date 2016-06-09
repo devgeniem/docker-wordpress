@@ -1,0 +1,30 @@
+#!/usr/bin/with-contenv bash
+
+# Setup sessions
+echo "; This file contains php session backend (default: files)" >> $session_ini
+
+if [ "$PHP_SESSION_HANDLER" == "redis" ]; then
+  echo "session.save_handler = redis" >> $session_ini
+
+  redis_resource_string="$WP_REDIS_SCHEME://"
+
+  # Use different setup in dev/prod
+  if [ "$WP_REDIS_HOST" != "" ]; then
+    redis_resource_string+="$WP_REDIS_HOST:$WP_REDIS_PORT"
+  elif [ "$REDIS_PORT_6379_TCP_ADDR" != "" ]; then
+    redis_resource_string+="$REDIS_PORT_6379_TCP_ADDR:$WP_REDIS_PORT"
+  fi
+
+  # Use password or different database when user provides them
+  redis_resource_string+="?database=$PHP_SESSION_REDIS_DB"
+
+  if [ "$WP_REDIS_PASSWORD" != "" ]; then
+    redis_resource_string+="&auth=$WP_REDIS_PASSWORD"
+  fi
+
+  echo "session.save_path = \"$redis_resource_string\"" >> $session_ini
+
+else # Use normal file based sessions if redis is not configured
+  echo "session.save_handler = files" >> $session_ini
+  echo "session.save_path = /tmp" >> $session_ini
+fi
