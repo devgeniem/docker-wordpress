@@ -42,7 +42,7 @@ If these files are owned by root user or root group the container will automatic
 You can have custom nginx includes in your project mount `/var/www/project/nginx`.
 
 **Include into http {} block:**
-`/var/www/project/nginx/server/*.conf`
+`/var/www/project/nginx/http/*.conf`
 
 **Include into server {} block:**
 `/var/www/project/nginx/server/*.conf`
