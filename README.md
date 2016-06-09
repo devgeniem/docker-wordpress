@@ -1,5 +1,5 @@
 # Lightweight PHP-FPM & Nginx Docker Image for WordPress
-[![devgeniem/alpine-wordpress docker image](http://dockeri.co/image/devgeniem/alpine-wordpress)](https://registry.hub.docker.com/u/devgeniem/alpine-wordpress/)
+[![devgeniem/alpine-wordpress docker image](http://dockeri.co/image/devgeniem/wordpress-server)](https://registry.hub.docker.com/u/devgeniem/wordpress-server/)
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
