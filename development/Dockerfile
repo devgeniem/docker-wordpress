@@ -1,4 +1,4 @@
-FROM devgeniem/wordpress:latest
+FROM devgeniem/wordpress-server:latest
 MAINTAINER Onni Hakala - Geniem Oy. <onni.hakala@geniem.com>
 
 # Install xdebug
