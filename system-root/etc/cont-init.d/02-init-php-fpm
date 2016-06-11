@@ -1,6 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-# Create log directory for php
-mkdir -p /var/log/container/php/
-touch /var/log/container/php/error.log
-chown -R wordpress:web /var/log/container/

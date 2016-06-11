@@ -1,5 +1,6 @@
 #!/usr/bin/with-contenv bash
 
+session_ini=/etc/php7/conf.d/sessions.ini
 # Setup sessions
 echo "; This file contains php session backend (default: files)" >> $session_ini
 
