@@ -1,11 +1,11 @@
-#!/usr/bin/with-contenv bash
+#!/bin/sh
 
 # Remove root cron because we don't allow anything else than tasks.cron
 rm /var/spool/cron/crontabs/root
 
 # Copy cronjob from project and run as nginx
-if [ -f $PROJECT_ROOT/tasks.cron ]; then
-  cp $PROJECT_ROOT/tasks.cron /var/spool/cron/crontabs/wordpress
+if [ -f /data/code/tasks.cron ]; then
+  cp /data/code/tasks.cron /var/spool/cron/crontabs/wordpress
 else
   # No cronjobs found remove crond from s6
   rm -r /etc/services.d/crond

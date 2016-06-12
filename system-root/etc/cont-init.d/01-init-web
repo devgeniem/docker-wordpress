@@ -1,0 +1,78 @@
+#!/usr/bin/with-contenv bash
+
+##
+# Create wordpress useng with $UID and web group with $GID
+##
+
+# If permissions were not defined get GID/UID from web files
+
+if [ -z "$WP_UID" ]; then
+  WP_UID=$(ls -n $WEB_ROOT | tail -n1 | xargs echo | cut -d' ' -f3)
+fi
+
+if [ -z "$WP_GID" ]; then
+  WP_GID=$(ls -n $WEB_ROOT | tail -n1 | xargs echo | cut -d' ' -f4)
+fi
+
+# If web files were owned by root use 100:101 as permissions instead
+if [ "$WP_GID" = "0" ] || [ "$WP_UID" = "0" ]; then
+
+  echo "ERROR: Your web root files are owned by root! This is dangerous so, I'm changing permissions into 100:101 instead"
+
+  # These are default if container was accidentally mounted with root owned files
+  WP_UID=100
+  WP_GID=101
+
+  # Chown all files to 100:101 instead than root
+  chown -R $WP_UID:$WP_GID $WEB_ROOT
+fi
+
+echo "Creating wordpress user with id: $WP_UID and group web with id: $WP_GID"
+
+
+# Create web group
+if [ -n "$WP_GID" ]; then
+
+  # Check if group with $GID already exists
+  web_group=$(getent group $WP_GID | cut -d':' -f1)
+
+  if [ -n "$web_group" ]; then
+
+    # Replace the existing group name to web
+    # This is done so that in local development we can just lookup permissions from mounted folders
+    # This UID/GID can be same as something already existing inside container
+    # This way we can use same uid/gid in container and host machine
+
+    echo "Replacing pre-existing group name $web_group -> web"
+    sed -i "s|$web_group|web|g" /etc/group
+
+    # We just changed this in /etc/group remember?
+    web_group="web"
+
+  else
+    # Create new group
+    web_group="web"
+    addgroup -g $WP_GID $web_group
+  fi
+else
+  echo "ERROR: Please set correct permissions into /data/code/web" 1>&2
+  exit 2
+fi
+
+# Create wordpress user
+if [ -n "$WP_UID" ] && [ -n "$WP_GID" ] ; then
+  web_user="wordpress"
+  adduser -u $WP_UID -h $PROJECT_ROOT -G $web_group -S -D $web_user
+else
+  echo "ERROR: Please set correct permissions into /data/code/web" 1>&2
+  exit 2
+fi
+
+# Create log directory for all parts of container to use
+# Create uploads directory if not exists
+if [ ! -d /data/log ] ; then
+  mkdir -p /data/log
+fi
+
+# Check that processes can write logs
+chown wordpress:web /data/log

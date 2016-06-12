@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Create uploads directory if not exists
+if [ ! -d /data/uploads ] ; then
+  mkdir -p /data/uploads
+  chown wordpress:web /data/uploads
+fi
+
+# Create log directory
+mkdir -p /data/log/nginx
+chown wordpress:web /data/log/nginx
+
+mkdir -p /tmp/nginx
+chown wordpress:web /tmp/nginx
