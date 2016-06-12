@@ -8,5 +8,5 @@ if [ "$OVERRIDE_ROOT" != "" ] && [ "$OVERRIDE_ROOT" != "$PROJECT_ROOT" ]; then
     rmdir $PROJECT_ROOT
 
     # Create symlink to real project root
-    ln -sf $PROJECT_ROOT $PROJECT_ROOT
+    ln -sf $OVERRIDE_ROOT $PROJECT_ROOT
 fi
