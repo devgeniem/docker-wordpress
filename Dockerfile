@@ -32,6 +32,9 @@ RUN apk add --update curl bash nano nginx ca-certificates \
     # Remove nginx user because we will create a user with correct permissions dynamically
     deluser nginx && \
 
+    # Remove default crontab
+    rm /var/spool/cron/crontabs/root && \
+
     ##
     # Add S6-overlay to use S6 process manager
     # source: https://github.com/just-containers/s6-overlay/#the-docker-way

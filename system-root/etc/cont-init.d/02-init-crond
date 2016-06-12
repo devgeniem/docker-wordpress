@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# Remove root cron because we don't allow anything else than tasks.cron
-rm /var/spool/cron/crontabs/root
-
 # Copy cronjob from project and run as nginx
 if [ -f /data/code/tasks.cron ]; then
   cp /data/code/tasks.cron /var/spool/cron/crontabs/wordpress
