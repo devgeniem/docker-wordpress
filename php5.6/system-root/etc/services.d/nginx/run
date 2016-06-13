@@ -1,0 +1,4 @@
+#!/usr/bin/execlineb -P
+
+# Run nginx processes as wordpress:web
+nginx

@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+
+# Default TZ is set in Dockerfile to Europe/Helsinki
+echo "$TZ" > /etc/timezone
+
+# Set timezone for php too
+echo "; Set timezone according to system env TZ" > /etc/php7/conf.d/timezone.ini
+echo "date.timezone = '$TZ'" >> /etc/php7/conf.d/timezone.ini

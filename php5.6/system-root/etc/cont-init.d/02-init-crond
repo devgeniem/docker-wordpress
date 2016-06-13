@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Copy cronjob from project and run as nginx
+if [ -f /data/code/tasks.cron ]; then
+  cp /data/code/tasks.cron /var/spool/cron/crontabs/wordpress
+else
+  # No cronjobs found remove crond from s6
+  rm -r /etc/services.d/crond
+fi

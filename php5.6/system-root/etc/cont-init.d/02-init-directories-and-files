@@ -1,0 +1,22 @@
+#!/usr/bin/with-contenv bash
+
+# Create uploads directory if not exists
+if [ ! -d $UPLOADS_ROOT ] ; then
+  mkdir -p $UPLOADS_ROOT
+  chown wordpress:web $UPLOADS_ROOT
+fi
+
+# Ensure that we didn't forget some root owned folders inside uploads dir
+find $UPLOADS_ROOT -user root -type d -exec chown wordpress:web {} \;
+
+# Create log directory
+mkdir -p /var/log/nginx
+
+# Create dir for sessions and cache
+mkdir -p /tmp/nginx
+chown wordpress:web /tmp/nginx
+
+# Create log directory for php
+mkdir -p /var/log/php/
+touch /var/log/php/error.log
+chown -R wordpress:web /var/log/
