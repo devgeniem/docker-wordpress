@@ -1,4 +1,3 @@
-# Dependency for php7: libwebp library doesn't work correctly with alpine:v3.3 so we are using alpine:edge
 FROM alpine:edge
 MAINTAINER Onni Hakala - Geniem Oy. <onni.hakala@geniem.com>
 

@@ -1,10 +1,10 @@
 #!/usr/bin/with-contenv bash
 
 # Setup sessions
-echo "; This file contains php session backend (default: files)" > /etc/php7/conf.d/sessions.ini
+echo "; This file contains php session backend (default: files)" > /etc/php5/conf.d/sessions.ini
 
 if [ "$PHP_SESSION_HANDLER" == "redis" ]; then
-  echo "session.save_handler = redis" >> /etc/php7/conf.d/sessions.ini
+  echo "session.save_handler = redis" >> /etc/php5/conf.d/sessions.ini
 
   redis_resource_string="$WP_REDIS_SCHEME://"
 
@@ -22,9 +22,9 @@ if [ "$PHP_SESSION_HANDLER" == "redis" ]; then
     redis_resource_string+="&auth=$WP_REDIS_PASSWORD"
   fi
 
-  echo "session.save_path = \"$redis_resource_string\"" >> /etc/php7/conf.d/sessions.ini
+  echo "session.save_path = \"$redis_resource_string\"" >> /etc/php5/conf.d/sessions.ini
 
 else # Use normal file based sessions if redis is not configured
-  echo "session.save_handler = files" >> /etc/php7/conf.d/sessions.ini
-  echo "session.save_path = /tmp" >> /etc/php7/conf.d/sessions.ini
+  echo "session.save_handler = files" >> /etc/php5/conf.d/sessions.ini
+  echo "session.save_path = /tmp" >> /etc/php5/conf.d/sessions.ini
 fi

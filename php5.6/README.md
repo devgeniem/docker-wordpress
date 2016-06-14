@@ -122,8 +122,8 @@ See more about these variables in [msmtp docs](http://msmtp.sourceforge.net/doc/
 
 ## What's inside container:
 ### For running WordPress
-- php7
-- php-fpm7
+- php
+- php-fpm
 - nginx
 - wp-cli
 
