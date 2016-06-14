@@ -18,6 +18,10 @@ RUN apk add --update curl bash nano nginx ca-certificates \
     php5-pdo_mysql php5-mysqli php5-gd php5-mcrypt php5-curl php5-opcache php5-ctype  \
     php5-intl php5-bcmath php5-dom php5-xmlreader php5-apcu php5-mysql php5-iconv && \
 
+    # Small fixes to php & nginx
+    ln -s /etc/php5 /etc/php && \
+    ln -s /usr/lib/php5 /usr/lib/php && \
+
     # Upgrade musl
     apk add -u musl && \
 

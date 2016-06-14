@@ -1,4 +1,4 @@
 #!/usr/bin/with-contenv bash
 
-exec /usr/bin/php-fpm -c /etc/php/php-fpm.ini --fpm-config /etc/php/php-fpm.conf --pid /var/run/php-fpm.pid
+exec /usr/bin/php-fpm -c /etc/php5/php-fpm.ini --fpm-config /etc/php5/php-fpm.conf --pid /var/run/php-fpm.pid
 
