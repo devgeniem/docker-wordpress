@@ -56,6 +56,14 @@ RUN apk add --update curl bash nano nginx ca-certificates \
     curl -L https://raw.githubusercontent.com/kvz/cronlock/master/cronlock -o /usr/local/bin/cronlock && \
     chmod +rx /usr/local/bin/cronlock && \
 
+    ##
+    # Install Composer
+    ##
+    curl -L -sS https://getcomposer.org/installer | \
+    php -- --install-dir=/usr/local/bin && \
+    mv /usr/local/bin/composer.phar /usr/local/bin/composer && \
+    chmod +rx /usr/local/bin/composer && \
+
     # Remove cache and tmp files
     rm -rf /var/cache/apk/* && \
     rm -rf /tmp/*
