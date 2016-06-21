@@ -3,7 +3,7 @@ FROM alpine:edge
 MAINTAINER Onni Hakala - Geniem Oy. <onni.hakala@geniem.com>
 
 # Install dependencies and small amount of devtools
-RUN apk add --update curl bash git nano nginx ca-certificates \
+RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     # Libs for php
     libssh2 libpng freetype libjpeg-turbo libgcc libxml2 libstdc++ icu-libs libltdl libmcrypt \
     # For mails
