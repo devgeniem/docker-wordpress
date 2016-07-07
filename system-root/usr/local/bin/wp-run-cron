@@ -16,13 +16,13 @@ if ! hash wp 2>/dev/null; then
 fi
 
 # If WordPress isn’t installed here, we bail
-if ! $(wp core is-installed --quiet); then
+if ! wp core is-installed --quiet >> /dev/null; then
   echo "WordPress is not installed here: ${WP_CORE}"
   exit
 fi
 
 # Get a list of site URLs
-if $(wp core is-installed --quiet --network);
+if wp core is-installed --quiet --network >> /dev/null;
 then
   SITE_URLS=`wp site list --fields=url --archived=0 --deleted=0 --format=csv | sed 1d`
 else
