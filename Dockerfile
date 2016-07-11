@@ -8,6 +8,8 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     libssh2 libpng freetype libjpeg-turbo libgcc libxml2 libstdc++ icu-libs libltdl libmcrypt \
     # For mails
     msmtp \
+    # For mysql import/export
+    mysql-client \
     # Set timezone according your location
     tzdata && \
     # Upgrade musl
