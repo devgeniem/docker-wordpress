@@ -5,6 +5,9 @@ MAINTAINER Onni Hakala - Geniem Oy. <onni.hakala@geniem.com>
 RUN apk add --update curl bash nano nginx ca-certificates \
     # Libs for php
     libssh2 libpng freetype libjpeg-turbo libgcc libxml2 libstdc++ icu-libs libltdl libmcrypt \
+    # WP-CLI will try to use interactive mode and causes few errors in output
+    # when ncurses is not installed
+    ncurses \
     # For mails
     msmtp \
     # For mysql import/export
