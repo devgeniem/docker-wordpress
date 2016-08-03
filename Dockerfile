@@ -87,6 +87,10 @@ ENV TERM="xterm" \
     DB_PASSWORD=""\
     # Set defaults which can be overriden
     DB_PORT="3306" \
+    # Use default web port in nginx but allow it to be overridden
+    # This also works correctly with flynn:
+    # https://github.com/flynn/flynn/issues/3213#issuecomment-237307457
+    PORT="80" \
     # Set defaults for redis
     WP_REDIS_PORT="6379" \
     WP_REDIS_DATABASE="0" \
@@ -95,9 +99,11 @@ ENV TERM="xterm" \
     # Cronlock is used to stop simultaneous cronjobs in clusterised environments
     CRONLOCK_HOST="" \
     # This is for your project root
-    PROJECT_ROOT="/var/www/project"\
+    PROJECT_ROOT="/var/www/project" \
     # This is used by nginx and php-fpm
-    WEB_ROOT="/var/www/project/web"\
+    WEB_ROOT="/var/www/project/web" \
+    # Nginx include files
+    NGINX_INCLUDE_DIR="/var/www/project/nginx" \
     # This is used automatically by wp-cli
     WP_CORE="/var/www/project/web/wp"\
     # This folder is used to mount files into host machine
@@ -109,6 +115,6 @@ ENV TERM="xterm" \
 # Set default path to project folder for easier running commands in project
 WORKDIR ${PROJECT_ROOT}
 
-EXPOSE 80
+EXPOSE ${PORT}
 
 ENTRYPOINT ["/init"]
