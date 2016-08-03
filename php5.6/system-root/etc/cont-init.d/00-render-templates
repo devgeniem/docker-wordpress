@@ -5,14 +5,8 @@
 ##
 
 echo "INFO: Substituting env into configuration files..."
-# render a template configuration file to temporary file and replace the original file
-# This substitutes ${PORT} style notations
-# expand variables + preserve formatting
-render_template() {
-    filename=$(basename $1)
-    eval "echo \"$(cat $1)\"" > /tmp/$filename
-    mv /tmp/$filename $1
-}
 
 # Nginx doesn't support env variables in config files so we will have to do this in hacky way instead
-render_template /etc/nginx/nginx.conf
+VARS='$PORT:$WEB_ROOT:$NGINX_INCLUDE_DIR'
+envsubst "$VARS" < /etc/nginx/nginx.conf > /tmp/nginx.conf
+mv /tmp/nginx.conf /etc/nginx/nginx.conf

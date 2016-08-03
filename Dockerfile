@@ -13,6 +13,8 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     msmtp \
     # For mysql import/export
     mysql-client \
+    # Install gettext
+    gettext \
     # Set timezone according your location
     tzdata && \
     # Upgrade musl

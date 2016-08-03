@@ -10,6 +10,8 @@ RUN apk add --update curl bash nano nginx ca-certificates \
     ncurses \
     # For mails
     msmtp \
+    # Install gettext
+    gettext \
     # For mysql import/export
     mysql-client \
     # Set timezone according your location
