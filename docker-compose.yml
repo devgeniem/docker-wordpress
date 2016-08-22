@@ -1,10 +1,15 @@
 # Use this if you're testing/debugging the build locally on OSX
-web:
+web56:
   build: .
-  dns:
-    # We need to add this static ip here until we can add --dns flag in nlf/dlite
-    # Related issue: https://github.com/nlf/dlite/issues/90
-    - 172.17.0.1
+  command: /init
+  volumes:
+    - ./web:/var/www/project/web
+  environment:
+    WP_UID: 100
+    WP_GID: 101
+
+web70:
+  build: .
   command: /init
   volumes:
     - ./web:/var/www/project/web

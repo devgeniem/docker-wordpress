@@ -66,7 +66,7 @@ RUN apk add --update curl bash nano nginx ca-certificates \
 # Add Project files like nginx and php-fpm processes and configs
 # Also custom scripts and bashrc
 ##
-COPY system-root/ /
+COPY rootfs/ /
 
 # Update path with composer files + wpcs
 ENV TERM="xterm" \

@@ -1,0 +1,30 @@
+#!/usr/bin/with-contenv bash
+##
+# This startup script adds all docker container ENVs to php ENVs by adding them into php configs
+##
+
+php_config_file=/etc/php-fpm.d/env.conf
+
+# Don't recreate the php-fpm file if it exists ( the container was restarted )
+if [ ! -f $php_config_file ];
+then
+    # Init comments into file
+    echo "; This file contains all ENV from docker" >> $php_config_file
+    echo "" >> $php_config_file
+
+    # Loop all docker envs without system envs
+    for env in $(env -u PATH -u PWD -u SHLVL -u TERM -u HOME -u HOSTNAME -u no_proxy -u _ -u EDITOR -u MANPATH); do
+
+        # Extract key and value from 'KEY=VALUE' format
+        env_key=$(echo $env | cut -f1 -d '=')
+        env_value=$(echo $env | cut -f2 -d '=')
+
+        # Skip empty ENVs
+        if [ "$env_value" == "" ]; then
+            continue
+        fi
+
+        # Add all docker envs to php-fpm
+        echo "env[\"${env_key}\"] = \"${env_key}\"" >> $php_config_file
+    done
+fi
