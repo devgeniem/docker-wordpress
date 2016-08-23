@@ -70,6 +70,8 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     php -- --install-dir=/usr/local/bin && \
     mv /usr/local/bin/composer.phar /usr/local/bin/composer && \
     chmod +rx /usr/local/bin/composer && \
+    # composer parallel install plugin
+    composer global require hirak/prestissimo && \
 
     # Remove cache and tmp files
     rm -rf /var/cache/apk/* && \
