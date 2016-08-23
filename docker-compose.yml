@@ -1,18 +1,30 @@
 # Use this if you're testing/debugging the build locally on OSX
 web56:
-  build: .
+  build: ./php5.6/
   command: /init
+  ports:
+    - 80
   volumes:
     - ./web:/var/www/project/web
   environment:
     WP_UID: 100
     WP_GID: 101
 
+    # For testing with gdev
+    VIRTUAL_HOST: php56.test
+    PORT: 80
+
 web70:
-  build: .
+  build: ./php7.0/
   command: /init
+  ports:
+    - 80
   volumes:
     - ./web:/var/www/project/web
   environment:
     WP_UID: 100
     WP_GID: 101
+
+    # For testing with gdev
+    VIRTUAL_HOST: php70.test
+    PORT: 80
