@@ -25,6 +25,9 @@ then
         fi
 
         # Add all docker envs to php-fpm
-        echo "env[\"${env_key}\"] = \"${env_key}\"" >> $php_config_file
+        echo "env[\"${env_key}\"] = \"\$${env_key}\"" >> $php_config_file
     done
+
+    # Empty line in the end for better readability
+    echo "" >> $php_config_file
 fi

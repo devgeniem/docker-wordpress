@@ -5,7 +5,7 @@
 ##
 if id -u wordpress > /dev/null 2>&1 && getent group web  > /dev/null 2>&1; then
     echo "INFO: user:wordpress and group:web already exists, skipping..."
-    return 0
+    exit 0
 fi
 
 

@@ -1,9 +1,11 @@
-#!/bin/sh
+#!/usr/bin/with-contenv bash
 
 # Copy cronjob from project and run as nginx
-if [ -f /data/code/tasks.cron ]; then
-  cp /data/code/tasks.cron /var/spool/cron/crontabs/wordpress
+if [ -f $PROJECT_ROOT/tasks.cron ]; then
+    cp $PROJECT_ROOT/tasks.cron /var/spool/cron/crontabs/wordpress
 else
-  # No cronjobs found remove crond from s6
-  rm -r /etc/services.d/crond
+    # No cronjobs found remove crond from s6
+    if [ -f /etc/services.d/crond ]; then
+        rm -r /etc/services.d/crond
+    fi
 fi
