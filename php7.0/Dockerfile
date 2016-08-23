@@ -35,6 +35,8 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     ln -s /usr/bin/php7 /usr/bin/php && \
     ln -s /usr/sbin/php-fpm7 /usr/bin/php-fpm && \
     ln -s /usr/lib/php7 /usr/lib/php && \
+    # No need for the default configs
+    rm -f /etc/php/php-fpm.d/www.conf && \
 
     # Remove nginx user because we will create a user with correct permissions dynamically
     deluser nginx && \
@@ -67,8 +69,7 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     # Install Composer
     ##
     curl -L -sS https://getcomposer.org/installer | \
-    php -- --install-dir=/usr/local/bin && \
-    mv /usr/local/bin/composer.phar /usr/local/bin/composer && \
+    php -- --install-dir=/usr/local/bin --filename=composer && \
     chmod +rx /usr/local/bin/composer && \
     # composer parallel install plugin
     composer global require hirak/prestissimo && \
