@@ -11,13 +11,13 @@
 
 # Check if WP-CLI is available
 if ! hash wp 2>/dev/null; then
-  echo "WP-CLI is not available"
+  echo "[wp-cron] ERROR: WP-CLI is not available"
   exit
 fi
 
 # If WordPress isn’t installed here, we bail
 if ! wp core is-installed --quiet >> /dev/null; then
-  echo "WordPress is not installed here: ${WP_CORE}"
+  echo "[wp-cron] ERROR: WordPress is not installed here: ${WP_CORE}"
   exit
 fi
 
