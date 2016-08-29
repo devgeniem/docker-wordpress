@@ -15,7 +15,7 @@ for log_file in /var/log/*/*.log; do
     filename=$(basename $log_file);
     log_type="${filename%.*}"
 
-    log_header=$(printf "[%12s]" "$application $log_type")
+    log_header=$(printf "[%s] " "$application $log_type")
 
     # Start log watcher process
     echo "[services.d] using logging helper for $application/$filename"
