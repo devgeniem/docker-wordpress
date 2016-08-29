@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/with-contenv bash
 ##
 # This startup script adds all docker container ENVs to php ENVs by adding them into php configs
 ##
