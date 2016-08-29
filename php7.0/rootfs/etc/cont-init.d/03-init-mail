@@ -9,6 +9,10 @@
 chown wordpress:web /etc/msmtprc
 chmod 0600 /etc/msmtprc
 
+# Check that php can use mail
+touch /var/log/mail/sent.log
+chown wordpress:web /var/log/mail/sent.log
+
 # Replace msmtp 'from' field
 if [ -n "$SMTP_FROM" ]; then
 

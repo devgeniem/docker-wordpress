@@ -78,6 +78,11 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     rm -rf /var/cache/apk/* && \
     rm -rf /tmp/*
 
+
+# Add small fixes to logging structure so that it works fine with our logging helper
+RUN     rm -rf /var/log/php7 \
+    &&  mkdir /var/log/mail/
+
 ##
 # Add Project files like nginx and php-fpm processes and configs
 # Also custom scripts and bashrc
@@ -109,6 +114,8 @@ ENV TERM="xterm" \
     WEB_ROOT="/var/www/project/web" \
     # Nginx include files
     NGINX_INCLUDE_DIR="/var/www/project/nginx" \
+    # Allow bigger file uploads
+    NGINX_MAX_BODY_SIZE="64M" \
     # This is used automatically by wp-cli
     WP_CORE="/var/www/project/web/wp"\
     # This folder is used to mount files into host machine

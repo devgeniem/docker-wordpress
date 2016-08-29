@@ -4,7 +4,7 @@
 # If wordpress user and web group already exists just skip the user creation
 ##
 if id -u wordpress > /dev/null 2>&1 && getent group web  > /dev/null 2>&1; then
-    echo "INFO: user:wordpress and group:web already exists, skipping..."
+    echo "[cont-init.d] user:wordpress and group:web already exists, skipping..."
     exit 0
 fi
 
@@ -25,14 +25,14 @@ fi
 # If web files were owned by root use 100:101 as permissions instead
 if [ "$WP_GID" = "0" ] || [ "$WP_UID" = "0" ]; then
 
-  echo "ERROR: Your web root files are owned by root. I'm running processes as uid/gid 100:101 instead"
+  echo "[cont-init.d] ERROR: Your web root files are owned by root. I'm running processes as uid/gid 100:101 instead"
 
   # These are default if container was accidentally mounted with root owned files
   WP_UID=100
   WP_GID=101
 fi
 
-echo "INFO: Creating wordpress user with id: $WP_UID and group web with id: $WP_GID"
+echo "[cont-init.d] Creating wordpress user with id: $WP_UID and group web with id: $WP_GID"
 
 # Create web group
 if [ -n "$WP_GID" ]; then
@@ -47,7 +47,7 @@ if [ -n "$WP_GID" ]; then
     # This UID/GID can be same as something already existing inside container
     # This way we can use same uid/gid in container and host machine
 
-    echo "Replacing pre-existing group name $web_group -> web"
+    echo "[cont-init.d] Replacing pre-existing group name $web_group -> web"
     sed -i "s|$web_group|web|g" /etc/group
 
     # We just changed this in /etc/group remember?
@@ -59,7 +59,7 @@ if [ -n "$WP_GID" ]; then
     addgroup -g $WP_GID $web_group
   fi
 else
-  echo "ERROR: Please set correct permissions into $WEB_ROOT" 1>&2
+  echo "[cont-init.d] ERROR: Please set correct permissions into $WEB_ROOT" 1>&2
   exit 2
 fi
 
@@ -68,7 +68,7 @@ if [ -n "$WP_UID" ] && [ -n "$WP_GID" ] ; then
   web_user="wordpress"
   adduser -u $WP_UID -h $PROJECT_ROOT -G $web_group -S -D $web_user
 else
-  echo "ERROR: Please set correct permissions into $WEB_ROOT" 1>&2
+  echo "[cont-init.d] ERROR: Please set correct permissions into $WEB_ROOT" 1>&2
   exit 2
 fi
 
