@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/bin/bash
 ##
 # This startup script adds all docker container ENVs to php ENVs by adding them into php configs
 ##
@@ -13,14 +13,19 @@ then
     echo "" >> $php_config_file
 
     # Loop all docker envs without system envs
+    # This has problems with multiline envs
+    # But since we don't need the keys we are alright
     for env in $(env -u PATH -u PWD -u SHLVL -u TERM -u HOME -u HOSTNAME -u no_proxy -u _ -u EDITOR -u MANPATH); do
 
+        env_key=""
+        env_value=""
         # Extract key and value from 'KEY=VALUE' format
-        env_key=$(echo $env | cut -f1 -d '=')
-        env_value=$(echo $env | cut -f2 -d '=')
+        env_key=$(echo $env | grep "=" | cut -f1 -d '=')
+        env_value=$(echo $env | grep "=" | cut -f2 -d '=')
 
-        # Skip empty ENVs
-        if [ "$env_value" == "" ]; then
+
+        # Skip empty ENVs or lines without '=' ( multiline envs don't behave really well with bash for loop )
+        if [ "$env_key" == "" ] || [ "$env_value" == "" ]; then
             continue
         fi
 
