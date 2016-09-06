@@ -107,6 +107,6 @@ ENV TERM="xterm" \
 # Set default path to project folder for easier running commands in project
 WORKDIR ${PROJECT_ROOT}
 
-EXPOSE 80
+EXPOSE ${PORT}
 
 ENTRYPOINT ["/init"]
