@@ -50,6 +50,9 @@ RUN apk add --update curl bash nano nginx ca-certificates \
     ##
     curl -L https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /usr/local/bin/wp-cli && \
     chmod +rx /usr/local/bin/wp-cli && \
+    # Install Depencies for wp-cli
+    # - It uses less internally to output help pages
+    apk add less && \
 
     ##
     # Install cronlock for running cron correctly with mulitple container setups
