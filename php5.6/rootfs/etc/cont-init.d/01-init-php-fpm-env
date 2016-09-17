@@ -3,7 +3,7 @@
 # This startup script adds all docker container ENVs to php ENVs by adding them into php configs
 ##
 
-php_config_file=/etc/php/php-fpm.d/env.conf
+php_config_file=/etc/php/fpm.d/env.conf
 
 # Don't recreate the php-fpm file if it exists ( the container was restarted )
 if [ ! -f $php_config_file ];
