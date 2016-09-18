@@ -18,3 +18,7 @@ chown wordpress:web /tmp/nginx
 mkdir -p /var/log/php/
 touch /var/log/php/error.log
 chown -R wordpress:web /var/log/
+
+# Create directory for mail logs
+mkdir -p /var/log/mail
+chown wordpress:web /var/log/mail
