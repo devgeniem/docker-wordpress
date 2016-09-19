@@ -10,3 +10,6 @@ echo "INFO: Substituting env into configuration files..."
 VARS='$PORT:$WEB_ROOT:$NGINX_INCLUDE_DIR'
 envsubst "$VARS" < /etc/nginx/nginx.conf > /tmp/nginx.conf
 mv /tmp/nginx.conf /etc/nginx/nginx.conf
+
+envsubst "$VARS" < /etc/php5/php-fpm.conf > /tmp/php-fpm.conf
+mv /tmp/php-fpm.conf /etc/php5/php-fpm.conf
