@@ -108,6 +108,8 @@ ENV TERM="xterm" \
     NGINX_FASTCGI_TIMEOUT="30" \
     # This is used automatically by wp-cli
     WP_CORE="/var/www/project/web/wp"\
+    # Use host machine as default SMTP_HOST
+    SMTP_HOST="172.17.0.1" \
     # This folder is used to mount files into host machine
     # You should use this path for your uploads since everything else should be ephemeral
     UPLOADS_ROOT="/var/www/uploads"\
