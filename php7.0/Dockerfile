@@ -35,13 +35,11 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     ln -s /usr/bin/php7 /usr/bin/php && \
     ln -s /usr/sbin/php-fpm7 /usr/bin/php-fpm && \
     ln -s /usr/lib/php7 /usr/lib/php && \
+    rm -rf /var/log/php7 \
     mkdir -p /var/log/php/ && \
 
     # No need for the default configs
     rm -f /etc/php/php-fpm.d/www.conf && \
-
-    # Create directory for msmtp mail logging
-    mkdir -p /var/log/mail && \
 
     # Remove nginx user because we will create a user with correct permissions dynamically
     deluser nginx && \
@@ -86,11 +84,6 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     # Remove cache and tmp files
     rm -rf /var/cache/apk/* && \
     rm -rf /tmp/*
-
-
-# Add small fixes to logging structure so that it works fine with our logging helper
-RUN     rm -rf /var/log/php7 \
-    &&  mkdir /var/log/mail/
 
 ##
 # Add Project files like nginx and php-fpm processes and configs
