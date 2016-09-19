@@ -7,22 +7,12 @@ fi
 
 chown wordpress:web $UPLOADS_ROOT
 
-# Create log directory
-mkdir -p /var/log/nginx
-
 # Create dir for sessions and cache
-mkdir -p /tmp/nginx
 chown wordpress:web /tmp/nginx
+chown wordpress:web /tmp/nginx/body
 
 # Create log directory for php
-mkdir -p /var/log/php/
 touch /var/log/php/error.log
+
+# Give wordpress user access to all log files
 chown -R wordpress:web /var/log/
-
-# Create directory for mail logs
-mkdir -p /var/log/mail
-chown wordpress:web /var/log/mail
-
-# Create nginx body tmp folder
-mkdir -p /tmp/nginx/body
-chown wordpress:web /tmp/nginx/body

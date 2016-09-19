@@ -27,12 +27,18 @@ RUN apk add --update curl bash nano nginx ca-certificates \
     # Small fixes to php & nginx
     ln -s /etc/php5 /etc/php && \
     ln -s /usr/lib/php5 /usr/lib/php && \
+    mkdir -p /var/log/php/ && \
+
+    # Create directory for msmtp mail logging
+    mkdir -p /var/log/mail && \
 
     # Upgrade musl
     apk add -u musl && \
 
     # Remove nginx user because we will create a user with correct permissions dynamically
     deluser nginx && \
+    mkdir -p /var/log/nginx && \
+    mkdir -p /tmp/nginx/body && \
 
     # Remove default crontab
     rm /var/spool/cron/crontabs/root && \
