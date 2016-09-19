@@ -44,9 +44,10 @@ if [ -n "$SMTP_USER" ]; then
     options+=("--user=$SMTP_USER")
 fi
 
-# TODO: passwordeval is not working yet
+# msmtp doesn't provide password option because usually it's unsafe
+# Use local hack for passwordeval
 if [ -n "$SMTP_PASSWORD" ]; then
-    options+=("--passwordeval='echo $SMTP_PASSWORD'")
+    options+=("--passwordeval=/usr/local/bin/print-smtp-password")
 fi
 
 
