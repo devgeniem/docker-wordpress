@@ -1,4 +1,4 @@
 #!/usr/bin/with-contenv bash
-
+echo "[services.d] started php-fpm"
 exec /usr/bin/php-fpm -c /etc/php/php-fpm.ini --fpm-config /etc/php/php-fpm.conf --pid /var/run/php-fpm.pid
 
