@@ -35,11 +35,18 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     ln -s /usr/bin/php7 /usr/bin/php && \
     ln -s /usr/sbin/php-fpm7 /usr/bin/php-fpm && \
     ln -s /usr/lib/php7 /usr/lib/php && \
+    mkdir -p /var/log/php/ && \
+
     # No need for the default configs
     rm -f /etc/php/php-fpm.d/www.conf && \
 
+    # Create directory for msmtp mail logging
+    mkdir -p /var/log/mail && \
+
     # Remove nginx user because we will create a user with correct permissions dynamically
     deluser nginx && \
+    mkdir -p /var/log/nginx && \
+    mkdir -p /tmp/nginx/body && \
 
     # Remove default crontab
     rm /var/spool/cron/crontabs/root && \
