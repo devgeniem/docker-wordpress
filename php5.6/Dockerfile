@@ -102,6 +102,10 @@ ENV TERM="xterm" \
     WEB_ROOT="/var/www/project/web" \
     # Nginx include files
     NGINX_INCLUDE_DIR="/var/www/project/nginx" \
+    # Allow bigger file uploads
+    NGINX_MAX_BODY_SIZE="64M" \
+    # Have sane fastcgi timeout by default
+    NGINX_FASTCGI_TIMEOUT="30" \
     # This is used automatically by wp-cli
     WP_CORE="/var/www/project/web/wp"\
     # This folder is used to mount files into host machine
