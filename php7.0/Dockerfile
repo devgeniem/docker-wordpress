@@ -35,7 +35,7 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     ln -s /usr/bin/php7 /usr/bin/php && \
     ln -s /usr/sbin/php-fpm7 /usr/bin/php-fpm && \
     ln -s /usr/lib/php7 /usr/lib/php && \
-    rm -rf /var/log/php7 \
+    rm -rf /var/log/php7 && \
     mkdir -p /var/log/php/ && \
 
     # No need for the default configs
