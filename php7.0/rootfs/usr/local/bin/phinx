@@ -5,7 +5,9 @@
 ##
 
 # Export database host in prod and dev
-if [ ! -z "$DB_HOST" ]; then
+if [ ! -z "$MYSQL_HOST" ]; then
+  export PHINX_DBHOST=$MYSQL_HOST
+elif [ ! -z "$DB_HOST" ]; then
   export PHINX_DBHOST=$DB_HOST
 elif [ ! -z "$DB_PORT_3306_TCP_ADDR" ]; then
   export PHINX_DBHOST=$DB_PORT_3306_TCP_ADDR
@@ -14,10 +16,11 @@ else
 fi
 
 # Export phinx envs
-export PHINX_DBPORT=$DB_PORT
-export PHINX_DBNAME=$DB_NAME
-export PHINX_DBUSER=$DB_USER
-export PHINX_DBPASSWORD=$DB_PASSWORD
+# Default to MYSQL_ envs but fallback to DB_
+export PHINX_DBPORT=${MYSQL_PORT-$DB_PORT}
+export PHINX_DBNAME=${MYSQL_DATABASE-$DB_NAME}
+export PHINX_DBUSER=${MYSQL_USER-$DB_USER}
+export PHINX_DBPASSWORD=${MYSQL_PWD-$DB_PASSWORD}
 export PHINX_ENVIRONMENT=$WP_ENV
 
 # Run phinx
