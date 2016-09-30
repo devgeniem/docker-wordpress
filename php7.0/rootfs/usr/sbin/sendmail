@@ -4,7 +4,7 @@
 # - It is used for php and cron
 # - This is easier to configure for external mail server than sendmail
 # - sendmail is just the default binary which other services will use
-# - It needs following env: SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_AUTH, SMTP_USER
+# - It needs following env: SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_USER
 ##
 
 # Deduce all used msmtp options from system ENVs
@@ -50,16 +50,51 @@ if [ -n "$SMTP_PASSWORD" ]; then
     options+=("--passwordeval=/usr/local/bin/print-smtp-password")
 fi
 
+if [ -n "$SMTP_TLS" ]; then
+
+    # msmtp only understands on / off
+    # Translate any random trueish or falseish value
+    # For example ansible converts SMTP_TLS: on -> SMTP_TLS: "True" which is super annoying
+    # So only use SMTP_AUTH: "on" ok?
+    case "$SMTP_TLS" in
+    "True" | "on" | "On" | "ON" | "1")
+        options+=("--tls=on")
+        echo "--tls=on"
+        ;;
+    "False" | "off" | "Off" | "OFF" | "0")
+        options+=("--tls=off")
+        echo "--tls=off"
+        ;;
+    *)
+        echo "[mail error] Sorry SMTP_TLS: $SMTP_TLS is not viable option: on/off"
+        ;;
+    esac
+
+fi
 
 if [ -n "$SMTP_AUTH" ]; then
-    options+=("--auth=$SMTP_AUTH")
+
+    # msmtp only understands on / off
+    # Translate any random trueish or falseish value
+    # For example ansible converts SMTP_AUTH: on -> SMTP_AUTH: "True" which is super annoying
+    # So only use SMTP_AUTH: "on" ok?
+    case "$SMTP_AUTH" in
+    "True" | "on" | "On" | "ON" | "1")
+        options+=("--auth=on")
+        ;;
+    "False" | "off" | "Off" | "OFF" | "0")
+        options+=("--auth=off")
+        ;;
+    *)
+        echo "[mail error] Sorry SMTP_AUTH: $SMTP_AUTH is not viable option: on/off"
+        ;;
+    esac
+
 elif [ -n "$SMTP_USER" ] || [ -n "$SMTP_PASSWORD" ]; then
     options+=("--auth=on")
 fi
 
-if [ -n "$SMTP_TLS" ]; then
-    options+=("--tls=$SMTP_TLS")
-fi
+echo ${options[@]}
 
 # Add our options and command line options for msmtp
 msmtp ${options[@]} "$@"
