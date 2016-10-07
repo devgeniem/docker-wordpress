@@ -28,7 +28,7 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     php7-pdo_mysql php7-mysqli php7-mysqlnd php7-mcrypt \
     php7 php7-session php7-fpm php7-json php7-zlib php7-xml php7-pdo \
     php7-gd php7-curl php7-opcache php7-ctype php7-mbstring php7-soap \
-    php7-intl php7-bcmath php7-dom php7-xmlreader php7-openssl php7-phar php7-redis  && \
+    php7-intl php7-bcmath php7-dom php7-xmlreader php7-openssl php7-phar php7-redis php7-mongodb  && \
 
     # Small fixes to php & nginx
     ln -s /etc/php7 /etc/php && \
