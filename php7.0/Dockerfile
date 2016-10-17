@@ -120,6 +120,10 @@ ENV TERM="xterm" \
     NGINX_MAX_BODY_SIZE="64M" \
     # Have sane fastcgi timeout by default
     NGINX_FASTCGI_TIMEOUT="30" \
+
+    # Default php memory limit
+    PHP_MEMORY_LIMIT="128M" \
+
     # This is used automatically by wp-cli
     WP_CORE="/var/www/project/web/wp" \
     # Use host machine as default SMTP_HOST

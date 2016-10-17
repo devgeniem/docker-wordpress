@@ -120,6 +120,16 @@ SMTP_AUTH
 
 See more about these variables in [msmtp docs](http://msmtp.sourceforge.net/doc/msmtp.html#Authentication).
 
+### PHP and Nginx Variables
+You can change following env to change php configs:
+
+```
+# Variables and default values
+PHP_MEMORY_LIMIT=128M
+NGINX_MAX_BODY_SIZE=64M
+NGINX_FASTCGI_TIMEOUT=30
+```
+
 ## What's inside container:
 ### For running WordPress
 - php7
