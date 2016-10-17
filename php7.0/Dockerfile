@@ -46,6 +46,13 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     mkdir -p /var/log/nginx && \
     mkdir -p /tmp/nginx/body && \
 
+    # Remove default localhost folder
+    rm -rf /var/www/localhost && \
+
+    # Create uploads folder and project folder
+    mkdir -p /var/www/uploads && \
+    mkdir -p /var/www/project/web && \
+
     # Remove default crontab
     rm /var/spool/cron/crontabs/root && \
 
