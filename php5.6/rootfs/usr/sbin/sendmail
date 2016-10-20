@@ -94,7 +94,5 @@ elif [ -n "$SMTP_USER" ] || [ -n "$SMTP_PASSWORD" ]; then
     options+=("--auth=on")
 fi
 
-echo ${options[@]}
-
 # Add our options and command line options for msmtp
 msmtp ${options[@]} "$@"

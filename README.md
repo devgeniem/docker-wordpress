@@ -1,7 +1,7 @@
 # Lightweight PHP-FPM & Nginx Docker Image for WordPress
 [![devgeniem/alpine-wordpress docker image](http://dockeri.co/image/devgeniem/wordpress-server)](https://registry.hub.docker.com/u/devgeniem/wordpress-server/)
 
-[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
+[![License](https://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
 
 This is maintained repository. We use this project in production and recommend this for your projects too. This container doesn't have mysql or email, you need to provide them from elsewhere. This can be other container or your host machine.
 
