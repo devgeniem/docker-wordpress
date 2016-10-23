@@ -5,14 +5,14 @@ if [ ! -d $UPLOADS_ROOT ] ; then
   mkdir -p $UPLOADS_ROOT
 fi
 
-chown wordpress:web $UPLOADS_ROOT
+chown $WEB_USER:$WEB_GROUP $UPLOADS_ROOT
 
 # Create dir for nginx tmp files
 if [ ! -d /tmp/nginx/body ] ; then
   mkdir -p /tmp/nginx/body
 fi
-chown wordpress:web /tmp/nginx
-chown wordpress:web /tmp/nginx/body
+chown $WEB_USER:$WEB_GROUP /tmp/nginx
+chown $WEB_USER:$WEB_GROUP /tmp/nginx/body
 
 # Create log directories if they don't exist already
 if [ ! -d /var/log/nginx ] ; then
@@ -25,8 +25,10 @@ if [ ! -d /var/log/mail ] ; then
   mkdir -p /var/log/mail
 fi
 
-# Create log directory for php
-touch /var/log/php/error.log
+if [ ! -d $WEB_ROOT ] ; then
+  mkdir -p $WEB_ROOT
+  chown $WEB_USER:$WEB_GROUP $WEB_ROOT
+fi
 
-# Give wordpress user access to all log files
-chown -R wordpress:web /var/log/
+# Give $WEB_USER user access to all log files
+chown -R $WEB_USER:$WEB_GROUP /var/log/

@@ -37,7 +37,7 @@ if [ -n "$WEB_GID" ]; then
 
   else
     # Create new group
-    echo "$ addgroup -g $WEB_GID $WEB_GROUP"
+    echo "$ groupadd -g $WEB_GID $WEB_GROUP"
     groupadd -g $WEB_GID $WEB_GROUP
   fi
 else
@@ -47,8 +47,8 @@ fi
 
 # Create $WEB_USER user
 if [ -n "$WEB_UID" ] && [ -n "$WEB_GID" ] ; then
-  echo "$ adduser -u $WEB_UID -h $PROJECT_ROOT -G $WEB_GROUP -S -D $WEB_USER"
-  useradd -u $WEB_UID -g $WEB_GROUP $WEB_USER \
+  echo "$ useradd -u $WEB_UID -g $WEB_GROUP --home $PROJECT_ROOT $WEB_USER"
+  useradd -u $WEB_UID -g $WEB_GROUP --home $PROJECT_ROOT $WEB_USER
 else
   echo "[cont-init.d] ERROR: Please set web user id in WEB_UID" 1>&2
   exit 2
