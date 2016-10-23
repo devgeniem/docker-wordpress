@@ -1,0 +1,31 @@
+#!/usr/bin/with-contenv sh
+##
+# This script uses clever heredoc hack to substitute env variables into static config files
+# Source: http://stackoverflow.com/questions/2914220/bash-templating-how-to-build-configuration-files-from-templates-with-bash
+##
+
+echo "[cont-init.d] Substituting env into configuration files..."
+
+##
+# Nginx doesn't support env variables in config files so we will have to do this in hacky way instead
+##
+VARS='$PORT:$WEB_ROOT:$WEB_USER:$WEB_GROUP:$NGINX_ACCESS_LOG:$NGINX_ERROR_LOG:$NGINX_ERROR_LEVEL:$NGINX_INCLUDE_DIR:$NGINX_MAX_BODY_SIZE:$NGINX_FASTCGI_TIMEOUT'
+envsubst "$VARS" < /etc/nginx/nginx.conf > /tmp/nginx.conf
+mv /tmp/nginx.conf /etc/nginx/nginx.conf
+
+
+
+##
+# Redis cache: Nginx doesn't support env variables in config files so we will have to do this in hacky way instead
+##
+
+# Set defaults if they are not set
+export REDIS_HOST=${REDIS_HOST-$REDIS_1_PORT_6379_TCP_ADDR}
+export REDIS_PORT=${REDIS_PORT-6379}
+export REDIS_DATABASE=${REDIS_DATABASE-0}
+export REDIS_PASSWORD=${REDIS_PASSWORD-''}
+export REDIS_CACHE_TTL=${REDIS_CACHE_TTL-14400}
+
+VARS='$REDIS_HOST:$REDIS_PORT:$REDIS_DATABASE:$REDIS_PASSWORD:$REDIS_CACHE_TTL'
+envsubst "$VARS" < /etc/nginx/cache/redis_backend.conf > /tmp/redis_cache.conf
+mv /tmp/redis_cache.conf /etc/nginx/cache/redis_backend.conf

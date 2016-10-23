@@ -1,0 +1,12 @@
+# These files are ignored from being uploaded to docker build context
+
+# Git is not needed in docker image building
+.git
+
+# No OSX rubbish
+.DS_Store
+
+# Development stuff
+docker-compose.yml
+.dockerignore
+Dockerfile

@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv sh
+echo "[services.d] started cron daemon"
+# Runs cron daemon in foreground
+cron -l 2 -f

@@ -1,0 +1,27 @@
+#!/usr/bin/with-contenv bash
+##
+# Phinx wrapper
+# You need to install phinx through composer first
+##
+
+# Export database host in prod and dev
+if [ ! -z "$MYSQL_HOST" ]; then
+  export PHINX_DBHOST=$MYSQL_HOST
+elif [ ! -z "$DB_HOST" ]; then
+  export PHINX_DBHOST=$DB_HOST
+elif [ ! -z "$DB_PORT_3306_TCP_ADDR" ]; then
+  export PHINX_DBHOST=$DB_PORT_3306_TCP_ADDR
+else
+  echo "ERROR: You need to set DB_HOST!"
+fi
+
+# Export phinx envs
+# Default to MYSQL_ envs but fallback to DB_
+export PHINX_DBPORT=${MYSQL_PORT-$DB_PORT}
+export PHINX_DBNAME=${MYSQL_DATABASE-$DB_NAME}
+export PHINX_DBUSER=${MYSQL_USER-$DB_USER}
+export PHINX_DBPASSWORD=${MYSQL_PWD-$DB_PASSWORD}
+export PHINX_ENVIRONMENT=$WP_ENV
+
+# Run phinx
+php $PROJECT_ROOT/vendor/bin/phinx $@

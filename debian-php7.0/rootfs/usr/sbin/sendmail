@@ -1,0 +1,66 @@
+#!/bin/bash
+##
+# This is custom wrapper for msmtp which acts like good old sendmail
+# - It is used for php and cron
+# - This is easier to configure for external mail server than sendmail
+# - sendmail is just the default binary which other services will use
+# - It needs following env: SMTP_HOST, SMTP_PASSWORD, SMTP_PORT, SMTP_AUTH, SMTP_USER
+##
+
+# Deduce all used msmtp options from system ENVs
+declare -a options
+
+# Act like sendmail
+options+=("-t")
+
+# Use system tls chain
+options+=("--tls-trust-file=/etc/ssl/certs/ca-certificates.crt")
+
+if [ -n "$SMTP_HOST" ]; then
+    options+=("--host=$SMTP_HOST")
+else
+    echo "[mail error] SMTP_HOST is not defined, mail can't be sent"
+    exit 1
+fi
+
+# Log all mail requests
+# try /var/log/mail/sent.log but use stdout when logfile is not available
+if [ -n "$SMTP_LOG" ]; then
+    options+=("--logfile=$SMTP_LOG")
+elif [ -f /var/log/mail/sent.log ]; then
+    options+=("--logfile=/var/log/mail/sent.log")
+fi
+
+if [ -n "$SMTP_FROM" ]; then
+    options+=("--from=$SMTP_FROM")
+fi
+
+# Default port for smtp is 25 and it will work even without this option
+if [ -n "$SMTP_PORT" ]; then
+    options+=("--port=$SMTP_PORT")
+fi
+
+# Setup credentials
+if [ -n "$SMTP_USER" ]; then
+    options+=("--user=$SMTP_USER")
+fi
+
+# msmtp doesn't provide password option because usually it's unsafe
+# Use local hack for passwordeval
+if [ -n "$SMTP_PASSWORD" ]; then
+    options+=("--passwordeval=/usr/local/bin/print-smtp-password")
+fi
+
+
+if [ -n "$SMTP_AUTH" ]; then
+    options+=("--auth=$SMTP_AUTH")
+elif [ -n "$SMTP_USER" ] || [ -n "$SMTP_PASSWORD" ]; then
+    options+=("--auth=on")
+fi
+
+if [ -n "$SMTP_TLS" ]; then
+    options+=("--tls=$SMTP_TLS")
+fi
+
+# Add our options and command line options for msmtp
+msmtp ${options[@]} "$@"

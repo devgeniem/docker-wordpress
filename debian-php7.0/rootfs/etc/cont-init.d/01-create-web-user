@@ -1,0 +1,58 @@
+#!/usr/bin/with-contenv bash
+
+##
+# If $WEB_USER user and web group already exists just skip the user creation
+##
+if id -u $WEB_USER > /dev/null 2>&1 && getent group $WEB_GROUP  > /dev/null 2>&1; then
+    echo "[cont-init.d] user:$WEB_USER and group:$WEB_GROUP already exist, skipping..."
+    exit 0
+fi
+
+##
+# Create $WEB_USER user with $WEB_UID and web group with $WEB_GID
+##
+
+# Set defaults if they are not set
+export WEB_USER=${WEB_USER-wordpress}
+export WEB_GROUP=${WEB_GROUP-web}
+export WEB_UID=${WEB_UID-1000}
+export WEB_GID=${WEB_GID-1000}
+
+echo "[cont-init.d] Creating $WEB_USER user with id: $WEB_UID and group web with id: $WEB_GID"
+
+# Create web group
+if [ -n "$WEB_GID" ]; then
+
+  # Check if group with $WEB_GID already exists
+  web_group=$(getent group $WEB_GID | cut -d':' -f1)
+
+  if [ -n "$web_group" ]; then
+
+    # Replace the existing group name to web
+    # This is done so that in local development we can just lookup permissions from mounted folders
+    # This UID/GID can be same as something already existing inside container
+    # This way we can use same uid/gid in container and host machine
+    echo "[cont-init.d] Replacing pre-existing group name $web_group -> $WEB_GROUP"
+    sed -i "s|$web_group|$WEB_GROUP|g" /etc/group
+
+  else
+    # Create new group
+    echo "$ addgroup -g $WEB_GID $WEB_GROUP"
+    groupadd -g $WEB_GID $WEB_GROUP
+  fi
+else
+  echo "[cont-init.d] ERROR: Please set web user group id in WEB_GID" 1>&2
+  exit 2
+fi
+
+# Create $WEB_USER user
+if [ -n "$WEB_UID" ] && [ -n "$WEB_GID" ] ; then
+  echo "$ adduser -u $WEB_UID -h $PROJECT_ROOT -G $WEB_GROUP -S -D $WEB_USER"
+  useradd -u $WEB_UID -g $WEB_GROUP $WEB_USER \
+else
+  echo "[cont-init.d] ERROR: Please set web user id in WEB_UID" 1>&2
+  exit 2
+fi
+
+# Check that processes can write logs
+chown $WEB_USER:$WEB_GROUP /var/log

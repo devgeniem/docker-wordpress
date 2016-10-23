@@ -1,0 +1,32 @@
+#!/usr/bin/with-contenv bash
+
+# Create uploads directory if not exists
+if [ ! -d $UPLOADS_ROOT ] ; then
+  mkdir -p $UPLOADS_ROOT
+fi
+
+chown wordpress:web $UPLOADS_ROOT
+
+# Create dir for nginx tmp files
+if [ ! -d /tmp/nginx/body ] ; then
+  mkdir -p /tmp/nginx/body
+fi
+chown wordpress:web /tmp/nginx
+chown wordpress:web /tmp/nginx/body
+
+# Create log directories if they don't exist already
+if [ ! -d /var/log/nginx ] ; then
+  mkdir -p /var/log/nginx
+fi
+if [ ! -d /var/log/php ] ; then
+  mkdir -p /var/log/php
+fi
+if [ ! -d /var/log/mail ] ; then
+  mkdir -p /var/log/mail
+fi
+
+# Create log directory for php
+touch /var/log/php/error.log
+
+# Give wordpress user access to all log files
+chown -R wordpress:web /var/log/

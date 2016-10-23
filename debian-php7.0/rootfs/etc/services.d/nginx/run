@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv sh
+
+# Run nginx always in foreground
+nginx -g "daemon off;"
