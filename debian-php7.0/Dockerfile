@@ -117,7 +117,10 @@ ENV \
     REDIS_DATABASE="0" \
     REDIS_PASSWORD="" \
     REDIS_SCHEME="tcp" \
-    REDIS_CACHE_TTL="15m" \
+
+    # Set defaults for NGINX redis cache
+    NGINX_REDIS_CACHE_TTL_DEFAULT="15m" \
+    NGINX_REDIS_CACHE_TTL_MAX="4h" \
 
     # Cronlock is used to stop simultaneous cronjobs in clusterised environments
     CRONLOCK_HOST="" \
