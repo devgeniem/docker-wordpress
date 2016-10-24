@@ -20,6 +20,7 @@ RUN \
         git \
         mysql-client \
         msmtp \
+        netcat \
     && echo "deb http://packages.dotdeb.org jessie all" > /etc/apt/sources.list.d/dotdeb.list \
     && curl -sS https://www.dotdeb.org/dotdeb.gpg | apt-key add - \
     && apt-get update \
@@ -116,7 +117,7 @@ ENV \
     REDIS_DATABASE="0" \
     REDIS_PASSWORD="" \
     REDIS_SCHEME="tcp" \
-    REDIS_CACHE_TTL="14400" \
+    REDIS_CACHE_TTL="15m" \
 
     # Cronlock is used to stop simultaneous cronjobs in clusterised environments
     CRONLOCK_HOST="" \
@@ -142,6 +143,8 @@ ENV \
 
     # PHP settings
     PHP_MEMORY_LIMIT="128M" \
+    PHP_ERROR_LOG="/dev/stdout" \
+    PHP_ERROR_LOG_LEVEL="warning" \
     PHP_SESSION_REDIS_DB="0" \
     PHP_SESSION_HANDLER="files" \
 
