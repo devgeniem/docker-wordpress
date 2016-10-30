@@ -151,6 +151,13 @@ ENV \
     PHP_SESSION_REDIS_DB="0" \
     PHP_SESSION_HANDLER="files" \
 
+    # You should count the *.php files in your project and set this number to be bigger
+    # $ find . -type f -print | grep php | wc -l
+    PHP_OPCACHE_MAX_FILES="8000" \
+
+    # Amount of memory in MB to allocate for opcache
+    PHP_OPCACHE_MAX_MEMORY="128" \
+
     # Use host machine as default SMTP_HOST
     SMTP_HOST="172.17.0.1" \
 
