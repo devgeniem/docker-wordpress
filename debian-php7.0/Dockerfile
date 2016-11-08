@@ -21,6 +21,7 @@ RUN \
         mysql-client \
         msmtp \
         netcat \
+        less \
     && echo "deb http://packages.dotdeb.org jessie all" > /etc/apt/sources.list.d/dotdeb.list \
     && curl -sS https://www.dotdeb.org/dotdeb.gpg | apt-key add - \
     && apt-get update \
@@ -146,6 +147,7 @@ ENV \
 
     # PHP settings
     PHP_MEMORY_LIMIT="128M" \
+    PHP_MAX_INPUT_VARS="1000" \
     PHP_ERROR_LOG="/dev/stdout" \
     PHP_ERROR_LOG_LEVEL="warning" \
     PHP_SESSION_REDIS_DB="0" \
