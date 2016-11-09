@@ -120,7 +120,9 @@ ENV \
     REDIS_SCHEME="tcp" \
 
     # Set defaults for NGINX redis cache
-    NGINX_REDIS_CACHE_TTL_DEFAULT="15m" \
+    # This variable uses seconds by default
+    # Time units supported are "s"(seconds), "ms"(milliseconds), "y"(years), "M"(months), "w"(weeks), "d"(days), "h"(hours), and "m"(minutes).
+    NGINX_REDIS_CACHE_TTL_DEFAULT="900" \
     NGINX_REDIS_CACHE_TTL_MAX="4h" \
 
     # Cronlock is used to stop simultaneous cronjobs in clusterised environments
