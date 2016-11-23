@@ -9,7 +9,7 @@ echo "[cont-init.d] Substituting env into configuration files..."
 ##
 # Nginx doesn't support env variables in config files so we will have to do this in hacky way instead
 ##
-VARS='$PORT:$WEB_ROOT:$WEB_USER:$WEB_GROUP:$NGINX_ACCESS_LOG:$NGINX_ERROR_LOG:$NGINX_ERROR_LEVEL:$NGINX_INCLUDE_DIR:$NGINX_MAX_BODY_SIZE:$NGINX_FASTCGI_TIMEOUT'
+VARS='$PORT:$WEB_ROOT:$WEB_USER:$WEB_GROUP:$NGINX_ACCESS_LOG:$NGINX_ERROR_LOG:$NGINX_ERROR_LEVEL:$NGINX_INCLUDE_DIR:$NGINX_MAX_BODY_SIZE:$NGINX_FASTCGI_TIMEOUT:$WP_ENV'
 envsubst "$VARS" < /etc/nginx/nginx.conf > /tmp/nginx.conf
 mv /tmp/nginx.conf /etc/nginx/nginx.conf
 
@@ -26,6 +26,6 @@ export REDIS_DATABASE=${REDIS_DATABASE-0}
 export REDIS_PASSWORD=${REDIS_PASSWORD-''}
 export REDIS_CACHE_TTL=${REDIS_CACHE_TTL-14400}
 
-VARS='$REDIS_HOST:$REDIS_PORT:$REDIS_DATABASE:$REDIS_PASSWORD:$NGINX_REDIS_CACHE_TTL_MAX:$NGINX_REDIS_CACHE_TTL_DEFAULT:$NGINX_REDIS_CACHE_PREFIX'
+VARS='$REDIS_HOST:$REDIS_PORT:$REDIS_DATABASE:$REDIS_PASSWORD:$NGINX_REDIS_CACHE_TTL_MAX:$NGINX_REDIS_CACHE_TTL_DEFAULT:$NGINX_REDIS_CACHE_PREFIX:$WP_ENV'
 envsubst "$VARS" < /etc/nginx/cache/redis_backend.conf > /tmp/redis_cache.conf
 mv /tmp/redis_cache.conf /etc/nginx/cache/redis_backend.conf
