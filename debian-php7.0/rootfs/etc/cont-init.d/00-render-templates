@@ -1,8 +1,28 @@
-#!/usr/bin/with-contenv sh
+#!/usr/bin/with-contenv bash
 ##
 # This script uses clever heredoc hack to substitute env variables into static config files
 # Source: http://stackoverflow.com/questions/2914220/bash-templating-how-to-build-configuration-files-from-templates-with-bash
 ##
+
+##
+# Replaces ${ENV} placoholders from file with provided variables
+# $1 - ':'' separated list of variables
+# $2 - filename to render
+##
+function render_env_tmpl() {
+    vars=$1
+    input_file=$2
+    # If filename ends with .tmpl replace it without the .tmpl
+    filename=$(dirname $input_file)/$(basename $input_file .tmpl)
+
+    tmp_file=/tmp/$(basename $filename)
+
+    # render all provided $vars to temporary file
+    envsubst "$vars" < $input_file > $tmp_file
+
+    # replace original file with rendered file
+    mv $tmp_file $filename
+}
 
 echo "[cont-init.d] Substituting env into configuration files..."
 
@@ -10,13 +30,10 @@ echo "[cont-init.d] Substituting env into configuration files..."
 # Nginx doesn't support env variables in config files so we will have to do this in hacky way instead
 ##
 VARS='$PORT:$WEB_ROOT:$WEB_USER:$WEB_GROUP:$NGINX_ACCESS_LOG:$NGINX_ERROR_LOG:$NGINX_ERROR_LEVEL:$NGINX_INCLUDE_DIR:$NGINX_MAX_BODY_SIZE:$NGINX_FASTCGI_TIMEOUT:$WP_ENV'
-envsubst "$VARS" < /etc/nginx/nginx.conf > /tmp/nginx.conf
-mv /tmp/nginx.conf /etc/nginx/nginx.conf
-
-
+render_env_tmpl "$VARS" /etc/nginx/nginx.conf
 
 ##
-# Redis cache: Nginx doesn't support env variables in config files so we will have to do this in hacky way instead
+# Redis cache needs to know the redis instance and credentials
 ##
 
 # Set defaults if they are not set
@@ -26,6 +43,19 @@ export REDIS_DATABASE=${REDIS_DATABASE-0}
 export REDIS_PASSWORD=${REDIS_PASSWORD-''}
 export REDIS_CACHE_TTL=${REDIS_CACHE_TTL-14400}
 
-VARS='$REDIS_HOST:$REDIS_PORT:$REDIS_DATABASE:$REDIS_PASSWORD:$NGINX_REDIS_CACHE_TTL_MAX:$NGINX_REDIS_CACHE_TTL_DEFAULT:$NGINX_REDIS_CACHE_PREFIX:$WP_ENV'
-envsubst "$VARS" < /etc/nginx/cache/redis_backend.conf > /tmp/redis_cache.conf
-mv /tmp/redis_cache.conf /etc/nginx/cache/redis_backend.conf
+VARS+='$REDIS_HOST:$REDIS_PORT:$REDIS_DATABASE:$REDIS_PASSWORD:$NGINX_REDIS_CACHE_TTL_MAX:$NGINX_REDIS_CACHE_TTL_DEFAULT:$NGINX_REDIS_CACHE_PREFIX'
+render_env_tmpl "$VARS" /etc/nginx/cache/redis_backend.conf
+
+##
+# Render all user provided nginx files
+##
+VARS+='$BASIC_AUTH_USER:$BASIC_AUTH_PASSWORD_HASH'
+for conf_file in $(find $NGINX_INCLUDE_DIR -type f  -name '*.tmpl'); do
+    echo "[cont-init.d] Rendering env in $conf_file..."
+
+    # Add helper variables for easier scripting
+    export __DIR__=$(dirname $conf_file)
+
+    VARS_TMPL=$VARS':$__DIR__'
+    render_env_tmpl "$VARS_TMPL" $conf_file
+done
