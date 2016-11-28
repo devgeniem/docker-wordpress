@@ -57,7 +57,7 @@ RUN \
 
     && apt-get clean \
     && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* /var/log/apt/*
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* /var/log/apt/* /var/log/*.log
 
 
 # Install helpers
@@ -150,7 +150,7 @@ ENV \
     # PHP settings
     PHP_MEMORY_LIMIT="128M" \
     PHP_MAX_INPUT_VARS="1000" \
-    PHP_ERROR_LOG="/dev/stdout" \
+    PHP_ERROR_LOG="/var/log/php/error.log" \
     PHP_ERROR_LOG_LEVEL="warning" \
     PHP_SESSION_REDIS_DB="0" \
     PHP_SESSION_HANDLER="files" \
@@ -171,6 +171,9 @@ ENV \
 
     # This can be overidden by you, it's just default for us
     TZ="Europe/Helsinki"
+
+# Setup $TZ. Remember to run this again in your own build
+RUN dpkg-reconfigure tzdata
 
 # Set default path to project folder for easier running commands in project
 WORKDIR ${PROJECT_ROOT}
