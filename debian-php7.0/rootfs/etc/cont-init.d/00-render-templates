@@ -47,7 +47,7 @@ VARS+='$REDIS_HOST:$REDIS_PORT:$REDIS_DATABASE:$REDIS_PASSWORD:$NGINX_REDIS_CACH
 render_env_tmpl "$VARS" /etc/nginx/cache/redis_backend.conf
 
 ##
-# Render all user provided nginx files
+# Render all user provided nginx templates
 ##
 VARS+='$BASIC_AUTH_USER:$BASIC_AUTH_PASSWORD_HASH'
 for conf_file in $(find $NGINX_INCLUDE_DIR -type f  -name '*.tmpl'); do
