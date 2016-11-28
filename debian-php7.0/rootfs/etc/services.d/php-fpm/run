@@ -1,4 +1,52 @@
 #!/usr/bin/with-contenv bash
+
+##
+# Check which kind of session backend we should be using
+##
+if [ -z "$PHP_SESSION_SAVE_PATH" ]; then
+    echo "[services.d] configuring php-fpm session backend..."
+
+    # Use 'files' as default session handler
+    export PHP_SESSION_HANDLER=${PHP_SESSION_HANDLER-files}
+
+    case "$PHP_SESSION_HANDLER" in
+
+    files)
+        mkdir -p /tmp/php
+        chown $WEB_USER:$WEB_GROU} /tmp/php
+
+        # export new env for php-fpm
+        export PHP_SESSION_SAVE_PATH='/tmp/php'
+        ;;
+    redis)
+        # Set defaults
+        REDIS_HOST=${REDIS_HOST-$REDIS_1_PORT_6379_TCP_ADDR}
+        REDIS_PORT=${REDIS_PORT-6379}
+        REDIS_SCHEME=${REDIS_SCHEME-tcp}
+
+        # After this time php-fpm will timeout from requesting session data
+        PHP_SESSION_REDIS_TIMEOUT=${PHP_SESSION_REDIS_TIMEOUT-5}
+
+        PHP_SESSION_REDIS_PARAMS="timeout=$PHP_SESSION_REDIS_TIMEOUT"
+
+        # Set these only if they are not 0 and '' because they add complexity for the query
+        if [ "$PHP_SESSION_REDIS_DB" != "" ]; then
+            PHP_SESSION_REDIS_PARAMS+="&database=$PHP_SESSION_REDIS_DB"
+        fi
+        if [ "$REDIS_PASSWORD" != "" ]; then
+            PHP_SESSION_REDIS_PARAMS+="&auth=$REDIS_PASSWORD"
+        fi
+        if [ "$PHP_SESSION_REDIS_PREFIX" != "" ]; then
+            PHP_SESSION_REDIS_PARAMS+="&prefix=$PHP_SESSION_REDIS_PREFIX"
+        fi
+
+        # export new env for php-fpm
+        export PHP_SESSION_SAVE_PATH="$REDIS_SCHEME://$REDIS_HOST:$REDIS_PORT?$PHP_SESSION_REDIS_PARAMS"
+        ;;
+    esac
+fi
+echo "[services.d] using $PHP_SESSION_SAVE_PATH for php sessions..."
+
 echo "[services.d] started php-fpm"
 exec php-fpm -c /etc/php/7.0/fpm/php.ini --fpm-config /etc/php/7.0/fpm/php-fpm.conf --pid /var/run/php-fpm.pid
 
