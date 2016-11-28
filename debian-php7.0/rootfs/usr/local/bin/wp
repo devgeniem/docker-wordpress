@@ -3,16 +3,10 @@
 # WP-cli wrapper: Append path automatically so that user doesn't have to
 ##
 if [ "$(whoami)" = "root" ]; then
-
-  # Gather all arguments because string interpolation doesn't work for $@
-  args=""
-  for i in "$@"; do
-      args="$args \"$i\""
-  done
-
   # Run as wordpress user instead
   # This helps that we don't install things as root
-  su -s /bin/bash $WEB_USER -c "/usr/local/bin/wp-cli $args --path=$WP_CORE"
+  # Or run 3rd party code as root
+  gosu $WEB_USER /usr/local/bin/wp-cli "$@" --path=$WP_CORE
 else
   /usr/local/bin/wp-cli "$@" --path=$WP_CORE
 fi
