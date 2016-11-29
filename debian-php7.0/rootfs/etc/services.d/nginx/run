@@ -1,4 +1,4 @@
 #!/usr/bin/with-contenv sh
 
 # Run nginx always in foreground
-nginx -g "daemon off;"
+exec nginx -g "daemon off;" -g "pid /var/run/nginx.pid;"

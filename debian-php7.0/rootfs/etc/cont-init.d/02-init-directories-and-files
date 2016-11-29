@@ -12,6 +12,6 @@ chown -R $WEB_USER:$WEB_GROUP /tmp/nginx
 mkdir -p /var/log/{nginx,php,mail}
 chown -R $WEB_USER:$WEB_GROUP /var/log/{nginx,php,mail}
 
-# Allow php-fpm to write to this socket
+# Allow php-fpm to write to socket/pid to it's own folder
 mkdir -p /var/run/php
 chown $WEB_USER:$WEB_GROUP /var/run/php
