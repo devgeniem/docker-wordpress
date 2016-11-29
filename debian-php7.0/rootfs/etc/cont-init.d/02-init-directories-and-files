@@ -2,12 +2,16 @@
 
 # Create uploads directory if not exists
 mkdir -p $UPLOADS_ROOT
-chown wordpress:web $UPLOADS_ROOT
+chown $WEB_USER:$WEB_GROUP $UPLOADS_ROOT
 
 # Create dir for nginx tmp files
 mkdir -p /tmp/nginx/body
-chown -R wordpress:web /tmp/nginx
+chown -R $WEB_USER:$WEB_GROUP /tmp/nginx
 
 # Create log directories if they don't exist already
 mkdir -p /var/log/{nginx,php,mail}
-chown -R wordpress:web /var/log/{nginx,php,mail}
+chown -R $WEB_USER:$WEB_GROUP /var/log/{nginx,php,mail}
+
+# Allow php-fpm to write to this socket
+mkdir -p /var/run/php
+chown $WEB_USER:$WEB_GROUP /var/run/php

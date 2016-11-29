@@ -4,7 +4,7 @@
 # Check which kind of session backend we should be using
 ##
 if [ -z "$PHP_SESSION_SAVE_PATH" ]; then
-    echo "[services.d] configuring php-fpm session backend..."
+    echo "[php-fpm] configuring php-fpm session backend..."
 
     # Use 'files' as default session handler
     export PHP_SESSION_HANDLER=${PHP_SESSION_HANDLER-files}
@@ -13,7 +13,7 @@ if [ -z "$PHP_SESSION_SAVE_PATH" ]; then
 
     files)
         mkdir -p /tmp/php
-        chown $WEB_USER:$WEB_GROU} /tmp/php
+        chown $WEB_USER:$WEB_GROUP /tmp/php
 
         # export new env for php-fpm
         export PHP_SESSION_SAVE_PATH='/tmp/php'
@@ -45,8 +45,8 @@ if [ -z "$PHP_SESSION_SAVE_PATH" ]; then
         ;;
     esac
 fi
-echo "[services.d] using $PHP_SESSION_SAVE_PATH for php sessions..."
+echo "[php-fpm] using $PHP_SESSION_SAVE_PATH for php sessions..."
 
-echo "[services.d] started php-fpm"
-exec php-fpm -c /etc/php/7.0/fpm/php.ini --fpm-config /etc/php/7.0/fpm/php-fpm.conf --pid /var/run/php-fpm.pid
+echo "[php-fpm] started php-fpm with $WEB_USER:$WEB_GROUP"
+exec s6-setuidgid $WEB_UID:$WEB_GID php-fpm -c /etc/php/7.0/fpm/php.ini --fpm-config /etc/php/7.0/fpm/php-fpm.conf --pid /var/run/php/fpm.pid
 

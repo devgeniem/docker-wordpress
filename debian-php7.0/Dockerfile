@@ -112,6 +112,8 @@ ENV \
     # Use custom users for nginx and php-fpm
     WEB_USER="wordpress" \
     WEB_GROUP="web" \
+    WEB_UID=1000 \
+    WEB_GID=1001 \
 
     # Set defaults for redis
     REDIS_PORT="6379" \
