@@ -47,6 +47,6 @@ if [ -z "$PHP_SESSION_SAVE_PATH" ]; then
 fi
 echo "[php-fpm] using $PHP_SESSION_SAVE_PATH for php sessions..."
 
-echo "[php-fpm] started php-fpm with $WEB_USER:$WEB_GROUP"
-exec s6-setuidgid $WEB_UID:$WEB_GID php-fpm -c /etc/php/7.0/fpm/php.ini --fpm-config /etc/php/7.0/fpm/php-fpm.conf --pid /var/run/php/fpm.pid
+echo "[php-fpm] started php-fpm"
+exec php-fpm -c /etc/php/7.0/fpm/php.ini --fpm-config /etc/php/7.0/fpm/php-fpm.conf --pid /var/run/php-fpm.pid
 

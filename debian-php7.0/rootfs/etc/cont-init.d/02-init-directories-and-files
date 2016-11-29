@@ -10,8 +10,9 @@ chown -R $WEB_USER:$WEB_GROUP /tmp/nginx
 
 # Create log directories if they don't exist already
 mkdir -p /var/log/{nginx,php,mail}
-chown -R $WEB_USER:$WEB_GROUP /var/log/{nginx,php,mail}
 
-# Allow php-fpm to write to socket/pid to it's own folder
-mkdir -p /var/run/php
-chown $WEB_USER:$WEB_GROUP /var/run/php
+# Create error.log so that php-fpm can write to it
+touch /var/log/php/error.log
+
+# Chown all files to wordpress
+chown -R $WEB_USER:$WEB_GROUP /var/log/{nginx,php,mail}
