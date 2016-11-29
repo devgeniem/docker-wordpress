@@ -112,6 +112,8 @@ ENV \
     # Use custom users for nginx and php-fpm
     WEB_USER="wordpress" \
     WEB_GROUP="web" \
+    WEB_UID=1000 \
+    WEB_GID=1001 \
 
     # Set defaults for redis
     REDIS_PORT="6379" \
@@ -173,7 +175,9 @@ ENV \
     TZ="Europe/Helsinki"
 
 # Setup $TZ. Remember to run this again in your own build
-RUN dpkg-reconfigure tzdata
+RUN dpkg-reconfigure tzdata && \
+    # Make sure that all files here have execute permissions
+    chmod +x /etc/cont-init.d/*
 
 # Set default path to project folder for easier running commands in project
 WORKDIR ${PROJECT_ROOT}
