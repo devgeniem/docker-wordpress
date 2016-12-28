@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/usr/bin/env bash
 ##
 # Phinx wrapper
 # You need to install phinx through composer first
