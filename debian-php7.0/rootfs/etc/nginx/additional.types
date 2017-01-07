@@ -1,0 +1,6 @@
+# If developers add .woff2 type font files we should provide good Content-Type headers
+types {
+    # Add mime support for woff2
+    # http://stackoverflow.com/questions/28235550/proper-mime-type-for-woff2-fonts
+    font/woff2                            woff2;
+}
