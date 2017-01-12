@@ -149,6 +149,9 @@ ENV \
     # Have sane fastcgi timeout by default
     NGINX_ACCESS_LOG="/dev/stdout" \
 
+    # Default cache key for nginx http cache
+    NGINX_CACHE_KEY='wp_:nginx:$real_scheme$request_method$host$request_uri' \
+
     # PHP settings
     PHP_MEMORY_LIMIT="128M" \
     PHP_MAX_INPUT_VARS="1000" \

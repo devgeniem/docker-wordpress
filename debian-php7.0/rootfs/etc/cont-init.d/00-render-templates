@@ -29,7 +29,7 @@ echo "[cont-init.d] Substituting env into configuration files..."
 ##
 # Nginx doesn't support env variables in config files so we will have to do this in hacky way instead
 ##
-VARS='$PORT:$WEB_ROOT:$WEB_USER:$WEB_GROUP:$NGINX_ACCESS_LOG:$NGINX_ERROR_LOG:$NGINX_ERROR_LEVEL:$NGINX_INCLUDE_DIR:$NGINX_MAX_BODY_SIZE:$NGINX_FASTCGI_TIMEOUT:$WP_ENV'
+VARS='$PORT:$WEB_ROOT:$WEB_USER:$WEB_GROUP:$NGINX_ACCESS_LOG:$NGINX_ERROR_LOG:$NGINX_ERROR_LEVEL:$NGINX_INCLUDE_DIR:$NGINX_MAX_BODY_SIZE:$NGINX_FASTCGI_TIMEOUT:$WP_ENV:$NGINX_CACHE_KEY'
 render_env_tmpl "$VARS" /etc/nginx/nginx.conf
 
 ##
@@ -44,7 +44,10 @@ export REDIS_PASSWORD=${REDIS_PASSWORD-''}
 export REDIS_CACHE_TTL=${REDIS_CACHE_TTL-14400}
 
 VARS+='$REDIS_HOST:$REDIS_PORT:$REDIS_DATABASE:$REDIS_PASSWORD:$NGINX_REDIS_CACHE_TTL_MAX:$NGINX_REDIS_CACHE_TTL_DEFAULT:$NGINX_REDIS_CACHE_PREFIX'
+
 render_env_tmpl "$VARS" /etc/nginx/cache/redis_backend.conf
+
+render_env_tmpl "$VARS" /etc/nginx/cache/srcache.conf
 
 ##
 # Render all user provided nginx templates
