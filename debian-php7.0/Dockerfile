@@ -155,8 +155,9 @@ ENV \
     # PHP settings
     PHP_MEMORY_LIMIT="128M" \
     PHP_MAX_INPUT_VARS="1000" \
-    PHP_ERROR_LOG="/var/log/php/error.log" \
+    PHP_ERROR_LOG="/proc/self/fd/1" \
     PHP_ERROR_LOG_LEVEL="warning" \
+    PHP_ERROR_LOG_MAX_LEN="8192" \
     PHP_SESSION_REDIS_DB="0" \
     PHP_SESSION_HANDLER="files" \
 
