@@ -22,6 +22,7 @@ RUN \
         msmtp \
         netcat \
         less \
+        libmcrypt-dev \
     && echo "deb http://packages.dotdeb.org jessie all" > /etc/apt/sources.list.d/dotdeb.list \
     && curl -sS https://www.dotdeb.org/dotdeb.gpg | apt-key add - \
     && apt-get update \
@@ -48,6 +49,7 @@ RUN \
         php7.0-bcmath \
         php7.0-curl \
         php7.0-ldap \
+        php7.0-mcrypt \
 
     # Force install only cron without extra mailing dependencies
     && cd /tmp \
