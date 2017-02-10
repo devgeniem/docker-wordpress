@@ -2,10 +2,27 @@
 
 # Copy cronjob from project and run as nginx
 if [ -f $PROJECT_ROOT/tasks.cron ]; then
+
+	# Setup all container env for cron
+	printenv | grep -v ^_= | grep -v "no_proxy" >> /etc/environment
+
+	# Use default redis for cronlock if cronlock variables are not set
+	if [ -n "$REDIS_HOST" ] && [ -z "$CRONLOCK_HOST" ] ; then
+		echo "CRONLOCK_HOST=$REDIS_HOST" >> /etc/environment
+	fi
+	if [ -n "$REDIS_PASSWORD" ] && [ -z "$CRONLOCK_AUTH" ] ; then
+		echo "CRONLOCK_AUTH=$REDIS_PASSWORD" >> /etc/environment
+	fi
+	if [ -n "$REDIS_PORT" ] && [ -z "$CRONLOCK_PORT" ] ; then
+		echo "CRONLOCK_PORT=$REDIS_PORT" >> /etc/environment
+	fi
+
+	# Copy cron template
     cp $PROJECT_ROOT/tasks.cron /var/spool/cron/crontabs/$WEB_USER
+    chown $WEB_USER /var/spool/cron/crontabs/$WEB_USER
 else
     # No cronjobs found remove crond from s6
-    if [ -f /etc/services.d/crond ]; then
-        rm -r /etc/services.d/crond
+    if [ -f /etc/services.d/cron ]; then
+        rm -r /etc/services.d/cron
     fi
 fi
