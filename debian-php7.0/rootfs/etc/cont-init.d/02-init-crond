@@ -20,6 +20,7 @@ if [ -f $PROJECT_ROOT/tasks.cron ]; then
 	# Copy cron template
     cp $PROJECT_ROOT/tasks.cron /var/spool/cron/crontabs/$WEB_USER
     chown $WEB_USER /var/spool/cron/crontabs/$WEB_USER
+    chmod 0600 /var/spool/cron/crontabs/$WEB_USER
 else
     # No cronjobs found remove crond from s6
     if [ -f /etc/services.d/cron ]; then
