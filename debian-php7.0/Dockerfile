@@ -84,16 +84,17 @@ RUN \
     && curl -L https://raw.githubusercontent.com/kvz/cronlock/master/cronlock -o /usr/local/bin/cronlock \
     && chmod +rx /usr/local/bin/cronlock
 
-# Run small fixes
-RUN \
-    ln -sf /usr/sbin/php-fpm7.0 /usr/sbin/php-fpm \
-    && mkdir -p /var/www/uploads
-
 ##
 # Add Project files like nginx and php-fpm processes and configs
 # Also custom scripts and bashrc
 ##
 COPY rootfs/ /
+
+# Run small fixes
+RUN set -x \
+    && mkdir -p /var/www/uploads \
+    && ln -sf /usr/sbin/php-fpm7.0 /usr/sbin/php-fpm \
+    && ln -sf /usr/bin/wp /usr/local/bin/wp
 
 # This is for your project root
 ENV PROJECT_ROOT="/var/www/project"
