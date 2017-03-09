@@ -57,6 +57,7 @@ RUN \
     && dpkg --force-all -i cron*.deb \
     && mkdir -p /var/spool/cron/crontabs \
 
+    # Cleanup
     && apt-get clean \
     && apt-get autoremove \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/* /var/log/apt/* /var/log/*.log
@@ -76,13 +77,17 @@ RUN \
     ##
     && curl -L https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar -o /usr/local/bin/wp-cli \
     && chmod +rx /usr/local/bin/wp-cli \
+    # Symlink it to /usr/bin as well so that cron can find this script with limited PATH
+    && ln -s /usr/local/bin/wp-cli /usr/bin/wp-cli \
 
     ##
     # Install cronlock for running cron correctly with multi container setups
     # https://github.com/kvz/cronlock
     ##
     && curl -L https://raw.githubusercontent.com/kvz/cronlock/master/cronlock -o /usr/local/bin/cronlock \
-    && chmod +rx /usr/local/bin/cronlock
+    && chmod +rx /usr/local/bin/cronlock \
+    # Symlink it to /usr/bin as well so that cron can find this script with limited PATH
+    && ln -s /usr/local/bin/cronlock /usr/bin/cronlock
 
 ##
 # Add Project files like nginx and php-fpm processes and configs
