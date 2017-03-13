@@ -29,7 +29,7 @@ echo "[cont-init.d] Substituting env into configuration files..."
 ##
 # Nginx doesn't support env variables in config files so we will have to do this in hacky way instead
 ##
-VARS='$PORT:$WEB_ROOT:$WEB_USER:$WEB_GROUP:$NGINX_ACCESS_LOG:$NGINX_ERROR_LOG:$NGINX_ERROR_LEVEL:$NGINX_INCLUDE_DIR:$NGINX_MAX_BODY_SIZE:$NGINX_FASTCGI_TIMEOUT:$WP_ENV:$NGINX_CACHE_KEY'
+VARS='$PORT:$WEB_ROOT:$WEB_USER:$WEB_GROUP:$NGINX_ACCESS_LOG:$NGINX_ERROR_LOG:$NGINX_ERROR_LEVEL:$NGINX_INCLUDE_DIR:$NGINX_MAX_BODY_SIZE:$NGINX_BODY_BUFFER_SIZE:$NGINX_FASTCGI_TIMEOUT:$WP_ENV:$NGINX_CACHE_KEY'
 render_env_tmpl "$VARS" /etc/nginx/nginx.conf
 
 ##

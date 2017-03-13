@@ -147,6 +147,8 @@ ENV \
     NGINX_INCLUDE_DIR="/var/www/project/nginx" \
     # Allow bigger file uploads
     NGINX_MAX_BODY_SIZE="10M" \
+    # Allow storing bigger body in memory
+    NGINX_BODY_BUFFER_SIZE="32k" \
     # Have sane fastcgi timeout by default
     NGINX_FASTCGI_TIMEOUT="30" \
 
