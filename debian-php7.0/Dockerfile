@@ -1,4 +1,4 @@
-FROM devgeniem/openresty-pagespeed
+FROM devgeniem/openresty-pagespeed-kontena
 MAINTAINER Onni Hakala <onni.hakala@geniem.com>
 
 ##
@@ -98,8 +98,12 @@ COPY rootfs/ /
 # Run small fixes
 RUN set -x \
     && mkdir -p /var/www/uploads \
+    && mkdir -p /dev/cache \
     && ln -sf /usr/sbin/php-fpm7.0 /usr/sbin/php-fpm \
     && ln -sf /usr/bin/wp /usr/local/bin/wp
+
+
+
 
 # This is for your project root
 ENV PROJECT_ROOT="/var/www/project"

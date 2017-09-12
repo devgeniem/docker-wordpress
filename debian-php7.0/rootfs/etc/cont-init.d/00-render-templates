@@ -52,7 +52,7 @@ VARS+='$REDIS_HOST:$REDIS_PORT:$REDIS_DATABASE:$REDIS_PASSWORD:$NGINX_REDIS_CACH
 render_env_tmpl "$VARS" /etc/nginx/cache/redis_backend.conf
 
 render_env_tmpl "$VARS" /etc/nginx/cache/srcache.conf
-
+render_env_tmpl "$VARS" /etc/nginx/cache/fastcgicache_settings.conf
 ##
 # Render all user provided nginx templates
 ##
