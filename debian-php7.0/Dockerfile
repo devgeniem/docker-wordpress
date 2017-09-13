@@ -1,5 +1,5 @@
-FROM devgeniem/openresty-pagespeed-kontena
-MAINTAINER Onni Hakala <onni.hakala@geniem.com>
+FROM devgeniem/docker-openresty-pagespeed-kontena
+MAINTAINER Ville Pietarinen - Geniem Oy <ville.pietarinen-nospam@geniem.com>
 
 ##
 # Only use these during installation
