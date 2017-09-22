@@ -50,6 +50,8 @@ RUN \
         php7.0-curl \
         php7.0-ldap \
         php7.0-mcrypt \
+        php7.0-imagick \
+        libmagickwand-dev \
 
     # Force install only cron without extra mailing dependencies
     && cd /tmp \
