@@ -5,6 +5,7 @@
 
 This is maintained repository. We use this project in production and recommend this for your projects too. This container doesn't have mysql or email, you need to provide them from elsewhere. This can be other container or your host machine.
 
+#Inclusion of all tools
 I tried to include all build, test and project tools in [docker-alpine-wordpress](https://github.com/devgeniem/docker-alpine-wordpress) image. I think that more modular design is better for docker and security as well.
 
 This project tries to be as minimal as possible and doesn't include anything that we don't absolutely need in the runtime.
