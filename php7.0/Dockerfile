@@ -1,11 +1,11 @@
 # Dependency for php7: libwebp library doesn't work correctly with alpine:v3.3 so we are using alpine:edge
-FROM alpine:edge
+FROM alpine:3.8
 MAINTAINER Onni Hakala - Geniem Oy. <onni.hakala@geniem.com>
 
 # Install dependencies and small amount of devtools
 RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     # Libs for php
-    libssh2 libpng freetype libjpeg-turbo libgcc libxml2 libstdc++ icu-libs libltdl libmcrypt \
+    libssh2 libpng freetype libjpeg-turbo libgcc libxml2 libstdc++ icu-libs libltdl libmcrypt libzip zip \
     # WP-CLI will try to use interactive mode and causes few errors in output
     # when ncurses is not installed
     ncurses \
@@ -24,15 +24,16 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     # Install php7
     # - These repositories are in 'testing' repositories but it's much more stable/easier than compiling our own php.
     ##
-    apk add --update-cache --repository http://dl-4.alpinelinux.org/alpine/edge/testing/ \
+    apk add --update-cache --repository https://dl-4.alpinelinux.org/alpine/v3.8/community/ \
     php7-pdo_mysql php7-mysqli php7-mysqlnd php7-mcrypt \
     php7 php7-session php7-fpm php7-json php7-zlib php7-xml php7-pdo \
     php7-gd php7-curl php7-opcache php7-ctype php7-mbstring php7-soap \
-    php7-intl php7-bcmath php7-dom php7-xmlreader php7-openssl php7-phar php7-redis php7-mongodb  && \
+    php7-intl php7-bcmath php7-dom php7-xmlreader php7-openssl php7-phar php7-redis php7-mongodb \
+    php7-zip php7-xml php7-simplexml php7-xmlwriter php7-xmlreader php7-xmlrpc php7-xsl && \
 
     # Small fixes to php & nginx
     ln -s /etc/php7 /etc/php && \
-    ln -s /usr/bin/php7 /usr/bin/php && \
+    #ln -s /usr/bin/php7 /usr/bin/php && \
     ln -s /usr/sbin/php-fpm7 /usr/bin/php-fpm && \
     ln -s /usr/lib/php7 /usr/lib/php && \
     rm -rf /var/log/php7 && \
@@ -85,6 +86,7 @@ RUN apk add --update curl bash git openssh-client nano nginx ca-certificates \
     curl -L -sS https://getcomposer.org/installer | \
     php -- --install-dir=/usr/local/bin --filename=composer && \
     chmod +rx /usr/local/bin/composer && \
+    composer self-update --1 && \
     # composer parallel install plugin
     composer global require hirak/prestissimo && \
 
